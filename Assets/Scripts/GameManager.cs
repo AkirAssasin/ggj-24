@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -34,6 +35,14 @@ public class GameManager : MonoBehaviour
     Akir.Coroutine m_endDayCoroutine;
     public bool IsEnteringNextDay => m_endDayCoroutine.Running;
 
+    //time
+    [SerializeField] int m_startHour, m_endHour;
+    [SerializeField] float m_minutesPerSecond;
+    [SerializeField] TextMeshProUGUI m_timeTextMesh;
+    [SerializeField] Slider m_timeBar;
+    float m_currentMinute;
+    int m_endOfDayMinutes;
+
     void Awake()
     {
         if (Instance != null) throw new System.Exception();
@@ -42,6 +51,8 @@ public class GameManager : MonoBehaviour
         m_sanityPrevDay = m_sanity = m_initialSanity;
 
         m_endDayCoroutine = new Akir.Coroutine(this);
+
+        m_endOfDayMinutes = (m_endHour - m_startHour) * 60;
     }
 
     void Start()
@@ -56,6 +67,9 @@ public class GameManager : MonoBehaviour
 
     void StartDay()
     {
+        m_currentMinute = 0;
+        SetTimeBarAndText();
+
         foreach (RoutineController routine in m_routines)
         {
             routine.Enable();
@@ -78,9 +92,44 @@ public class GameManager : MonoBehaviour
         enemy.Initialize(position);
     }
 
+    void SetTimeBarAndText()
+    {
+        //set time UI
+        m_timeBar.value = m_currentMinute / m_endOfDayMinutes;
+        int hours = (int)(m_currentMinute / 60);
+        int minutes = (int)(m_currentMinute - hours * 60);
+        hours += m_startHour;
+        
+        string meridian;
+        if (hours >= 12)
+        {
+            hours -= 12;
+            meridian = "PM";
+        }
+        else meridian = "AM";
+        if (hours == 0) hours = 12;
+
+        m_timeTextMesh.text = $"{hours:00}:{minutes:00} {meridian}";
+    }
+
     // Update is called once per frame
     void Update()
     {
+        //normal day stuff
+        if (!IsEnteringNextDay)
+        {
+            //advance time
+            m_currentMinute += m_minutesPerSecond * Time.deltaTime;
+            if (m_currentMinute >= m_endOfDayMinutes)
+            {
+                //you didn't bedge in time
+                m_currentMinute = m_endOfDayMinutes;
+                EndDay();
+            }
+            SetTimeBarAndText();
+        }
+
+        //debug key
         if (Input.GetKeyDown(KeyCode.Space)) SpawnEnemy(Random.insideUnitCircle * 5f);
     }
 
@@ -88,7 +137,7 @@ public class GameManager : MonoBehaviour
     void SetSanityText(float t)
     {
         int currentSanity = (int)(100 * Mathf.Lerp(m_sanityPrevDay, m_sanity, t));
-        m_sanityTextMesh.text = currentSanity + "%";
+        m_sanityTextMesh.text = $"{currentSanity:00}%";
     }
 
     //advance to next day
@@ -116,14 +165,14 @@ public class GameManager : MonoBehaviour
             yield return new RunForDuration(m_sanityTextDuration, t => SetSanityText(t * t));
             m_sanityPrevDay = m_sanity;
 
+            //start day
+            StartDay();
+
             //fade out
             yield return new RunForDuration(m_sanityBlackoutFadeDuration, t =>
             {
                 m_sanityBlackoutGroup.alpha = 1f - m_sanityFadeCurve.Evaluate(t);
             });
-
-            //start day
-            StartDay();
         }
         m_endDayCoroutine.Start(EndDayCoroutine());
     }
