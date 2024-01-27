@@ -9,8 +9,12 @@ public class RoutineController : MonoBehaviour
     [SerializeField, TextArea] string m_checklistText;
 
     //interactable
-    [field:SerializeField] public int m_interactionPointerCount { get; private set; }
+    [field:SerializeField] public int InteractionPointerCount { get; private set; }
     bool m_isInteractable;
+
+    //sanity
+    [field:SerializeField] public float m_sanityGainOnComplete;
+    [field:SerializeField] public bool m_endDayOnComplete;
 
     //component
     Transform m_transform;
@@ -49,10 +53,15 @@ public class RoutineController : MonoBehaviour
 
     public void Complete()
     {
+        if (GameManager.Instance.IsEnteringNextDay || !m_isInteractable) return;
+
         m_checklistItemTextMesh.fontStyle = FontStyles.Strikethrough;
         m_checklistItemTextMesh.color = m_checklistCompleteColor;
 
         m_isInteractable = false;
+        GameManager.Instance.GainSanity(m_sanityGainOnComplete);
+
+        if (m_endDayOnComplete) GameManager.Instance.EndDay();
     }
 
     void Update()

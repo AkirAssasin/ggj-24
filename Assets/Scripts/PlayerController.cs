@@ -68,6 +68,13 @@ public class PlayerController : MonoBehaviour
             m_barProgressSpeedMultiplier = Mathf.Min(1f, m_barProgressSpeedMultiplier + Time.deltaTime * m_barStunRecoverySpeed);
         }
 
+        //end day things
+        if (GameManager.Instance.IsEnteringNextDay)
+        {
+            CancelInteraction();
+            m_nearestInteractableRoutine = null;
+        }
+
         //update interaction
         if (m_interactingWithThis != null)
         {
@@ -136,12 +143,22 @@ public class PlayerController : MonoBehaviour
 
     void StartInteraction(RoutineController interactWithThis)
     {
+        //cancel previous interaction
         if (m_interactingWithThis != null) CancelInteraction();
-        m_interactingWithThis = interactWithThis;
 
+        //check if interaction is instant
+        if (interactWithThis.InteractionPointerCount <= 0)
+        {
+            interactWithThis.Complete();
+            return;
+        }
+
+        //not instant
+        m_interactingWithThis = interactWithThis;
         m_interactionBarParent.SetActive(true);
         
-        m_interactionPointerCount = m_interactingWithThis.m_interactionPointerCount;
+        //set up pointers
+        m_interactionPointerCount = m_interactingWithThis.InteractionPointerCount;
         for (int X = 0; X < m_interactionPointerCount; ++X)
         {
             if (X >= m_interactionPointers.Count)
@@ -157,6 +174,7 @@ public class PlayerController : MonoBehaviour
             m_interactionPointers[X].SetActive(false);
         }
 
+        //set bar range
         SetNewBarRange();
     }
 
@@ -175,8 +193,11 @@ public class PlayerController : MonoBehaviour
         {
             //spam click to progress
             m_quickTimeProgress += m_quickTimeProgressPerInput;
+
+            //also cancel interaction
+            CancelInteraction();
         }
-        if (m_quickTimeProgress >= 1f)
+        if (m_quickTimeProgress >= 1f || GameManager.Instance.IsEnteringNextDay)
         {
             //we done
             GameManager.Instance.SpawnEnemy(Position + Random.insideUnitCircle);

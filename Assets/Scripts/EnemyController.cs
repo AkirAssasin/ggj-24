@@ -65,7 +65,7 @@ public class EnemyController : PoolableObject<EnemyController>
     void OnCollisionEnter2D(Collision2D collision)
     {
         //can latch onto player?
-        if (m_spawnCoroutine.Running || GameManager.Instance.Player.IsLatched) return;
+        if (m_spawnCoroutine.Running || GameManager.Instance.IsEnteringNextDay || GameManager.Instance.Player.IsLatched) return;
 
         //try get player
         PlayerController player = collision.gameObject.GetComponent<PlayerController>();
