@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     //enemies
     [SerializeField] GameObject m_enemyPrefab;
+    readonly List<EnemyController> m_enemies = new List<EnemyController>();
 
     //checklist
     [SerializeField] RectTransform m_checklistParent;
@@ -70,12 +71,20 @@ public class GameManager : MonoBehaviour
 
     void StartDay()
     {
+        //reset time
         m_currentMinute = 0;
         SetTimeBarAndText();
 
+        //reset routine
         foreach (RoutineController routine in m_routines)
         {
             routine.Enable();
+        }
+
+        //reset enemies
+        for (int X = m_enemies.Count - 1; X > -1; --X)
+        {
+            m_enemies[X].Pool();
         }
     }
 
@@ -92,8 +101,11 @@ public class GameManager : MonoBehaviour
     public void SpawnEnemy(Vector2 position)
     {
         EnemyController enemy = EnemyController.GetFromPool(m_enemyPrefab);
+        m_enemies.Add(enemy);
         enemy.Initialize(position);
     }
+
+    public void UnregisterEnemy(EnemyController enemy) => m_enemies.Remove(enemy);
 
     void SetTimeBarAndText()
     {

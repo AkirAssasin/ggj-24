@@ -210,11 +210,7 @@ public class PlayerController : MonoBehaviour
         if (m_quickTimeProgress >= 1f || GameManager.Instance.IsEnteringNextDay)
         {
             //we done
-            GameManager.Instance.SpawnEnemy(Position + Random.insideUnitCircle);
-            m_quickTimeUI.SetActive(false);
-            IsLatched = false;
-            
-            GameManager.Instance.Camera.NormalizedZoomLevel = 0;
+            CancelLatch();
         }
         else
         {
@@ -226,12 +222,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void CancelLatch()
+    {
+        if (IsLatched)
+        {
+            GameManager.Instance.SpawnEnemy(Position + Random.insideUnitCircle);
+            m_quickTimeUI.SetActive(false);
+            IsLatched = false;
+            m_animator.SetBool("IsLatched", false);
+            
+            GameManager.Instance.Camera.NormalizedZoomLevel = 0;
+        }
+    }
+
     public void LatchOn()
     {
         //begin le quicktime event
         m_quickTimeProgress = 0;
         m_quickTimeUI.SetActive(true);
         IsLatched = true;
+        m_animator.SetBool("IsLatched", true);
     }
 
     public void CheckNearestRoutine(RoutineController routine, float sqDistance)

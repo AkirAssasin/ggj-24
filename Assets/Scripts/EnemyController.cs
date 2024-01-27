@@ -50,6 +50,7 @@ public class EnemyController : PoolableObject<EnemyController>
         if (base.Pool())
         {
             m_spawnCoroutine.Stop();
+            GameManager.Instance.UnregisterEnemy(this);
 
             m_rigidbody.simulated = false;
             m_collider.enabled = false;
