@@ -6,12 +6,14 @@ using UnityEngine;
 public class RoutineScheduleHandler
 {
     readonly RoutineSchedule m_schedule;
+    readonly GameObject m_checklistItem;
     readonly TextMeshProUGUI m_checklistItemTextMesh;
 
     public RoutineScheduleHandler(RoutineSchedule schedule, GameObject checklistItem)
     {
         m_schedule = schedule;
-        m_checklistItemTextMesh = checklistItem.GetComponent<TextMeshProUGUI>();
+        m_checklistItem = checklistItem;
+        m_checklistItemTextMesh = m_checklistItem.GetComponent<TextMeshProUGUI>();
     }
 
     public void Complete()
@@ -33,7 +35,7 @@ public class RoutineScheduleHandler
     {
         if (m_schedule.m_endHour <= currentHour)
         {
-            Object.Destroy(m_checklistItemTextMesh.gameObject);
+            GameManager.Instance.RemoveChecklistItem(m_checklistItem);
             return true;
         }
         return false;

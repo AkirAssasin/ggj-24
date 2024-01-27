@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     //checklist
     [SerializeField] RectTransform m_checklistParent;
     [SerializeField] GameObject m_checklistItemPrefab;
+    readonly List<GameObject> m_checklistItems = new List<GameObject>();
 
     //routines
     [SerializeField] List<RoutineController> m_routines;
@@ -87,6 +88,10 @@ public class GameManager : MonoBehaviour
         //reset time
         m_currentMinute = 0;
         SetTimeBarAndText();
+
+        //clear checklist
+        foreach (GameObject checklistItem in m_checklistItems) Destroy(checklistItem);
+        m_checklistItems.Clear();
 
         //reset routine
         m_nextRoutineScheduleIndex = 0;
@@ -182,7 +187,14 @@ public class GameManager : MonoBehaviour
     public void AddThisRoutineSchedule(RoutineSchedule addThisSchedule)
     {
         GameObject checklistItem = Instantiate(m_checklistItemPrefab, m_checklistParent);
+        m_checklistItems.Add(checklistItem);
         m_routinesDict[addThisSchedule.m_where].AddSchedule(addThisSchedule, checklistItem);
+    }
+
+    public void RemoveChecklistItem(GameObject checklistItem)
+    {
+        m_checklistItems.Remove(checklistItem);
+        Destroy(checklistItem);
     }
 
     //set sanity text
