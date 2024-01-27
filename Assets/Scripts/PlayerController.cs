@@ -57,15 +57,19 @@ public class PlayerController : MonoBehaviour
         if (m_quickTimeProgress >= 1f)
         {
             //we done
-            EnemyController.GetFromPool(null).Initialize(Position + Random.insideUnitCircle);
+            GameManager.Instance.SpawnEnemy(Position + Random.insideUnitCircle);
             m_quickTimeUI.SetActive(false);
             IsLatched = false;
+            
+            GameManager.Instance.Camera.NormalizedZoomLevel = 0;
         }
         else
         {
             //we aint done
-            m_quickTimeProgress -= m_quickTimeLoss * Time.deltaTime;
+            m_quickTimeProgress = Mathf.Max(0, m_quickTimeProgress - m_quickTimeLoss * Time.deltaTime);
             m_quickTimeSlider.value = m_quickTimeProgress;
+
+            GameManager.Instance.Camera.NormalizedZoomLevel = 1f - m_quickTimeProgress * 0.5f;
         }
     }
 

@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     //player reference
     [field:SerializeField] public PlayerController Player { get; private set; }
+    [field:SerializeField] public CameraController Camera { get; private set; }
 
     //prefab
     [SerializeField] GameObject m_enemyPrefab;
@@ -24,13 +25,15 @@ public class GameManager : MonoBehaviour
         if (Instance == this) Instance = null;
     }
 
+    public void SpawnEnemy(Vector2 position)
+    {
+        EnemyController enemy = EnemyController.GetFromPool(m_enemyPrefab);
+        enemy.Initialize(position);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            EnemyController enemy = EnemyController.GetFromPool(m_enemyPrefab);
-            enemy.Initialize(Random.insideUnitCircle * 5);
-        }
+        if (Input.GetKeyDown(KeyCode.Space)) SpawnEnemy(Random.insideUnitCircle * 5f);
     }
 }
