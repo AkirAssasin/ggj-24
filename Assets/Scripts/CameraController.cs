@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] float MinZoomOrthoSize, MaxZoomOrthoSize;
+    [SerializeField] float MinZoomOrthoSize, MaxZoomOrthoSize, MaxFollow;
 
     Vector2 m_originalPosition;
     float m_originalZ;
@@ -28,7 +28,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        Vector2 currentPosition = Vector2.Lerp(m_originalPosition, GameManager.Instance.Player.Position, NormalizedZoomLevel);
+        Vector2 currentPosition = Vector2.Lerp(m_originalPosition, GameManager.Instance.Player.Position, NormalizedZoomLevel * MaxFollow);
         m_transform.position = new Vector3(currentPosition.x, currentPosition.y, m_originalZ);
         m_camera.orthographicSize = Mathf.Lerp(MinZoomOrthoSize, MaxZoomOrthoSize, NormalizedZoomLevel);
     }

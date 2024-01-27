@@ -11,13 +11,31 @@ public class GameManager : MonoBehaviour
     [field:SerializeField] public PlayerController Player { get; private set; }
     [field:SerializeField] public CameraController Camera { get; private set; }
 
-    //prefab
+    //enemies
     [SerializeField] GameObject m_enemyPrefab;
+
+    //checklist
+    [SerializeField] RectTransform m_checklistParent;
+    [SerializeField] GameObject m_checklistItemPrefab;
+
+    //routines
+    [SerializeField] List<RoutineController> m_routines;
 
     void Awake()
     {
         if (Instance != null) throw new System.Exception();
         Instance = this;
+    }
+
+    void Start()
+    {
+        foreach (RoutineController routine in m_routines)
+        {
+            GameObject checklistItem = Instantiate(m_checklistItemPrefab, m_checklistParent);
+            routine.Initialize(checklistItem);
+
+            routine.Enable();
+        }
     }
 
     void OnDestroy()
