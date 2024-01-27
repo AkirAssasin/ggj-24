@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,11 @@ public class GameManager : MonoBehaviour
 
     //routines
     [SerializeField] List<RoutineController> m_routines;
+    Dictionary<string, RoutineController> m_routinesDict;
+
+    //routines pt 2
+    [SerializeField] List<RoutineSchedule> m_routineSchedules;
+    int m_nextRoutineScheduleIndex;
 
     //sanity
     [SerializeField] float m_initialSanity, m_sanityLossPerDay;
@@ -44,28 +50,35 @@ public class GameManager : MonoBehaviour
     float m_currentMinute;
     int m_endOfDayMinutes;
 
+    public int GetCurrentHour() => m_startHour + (int)(m_currentMinute / 60);
+
     //cues
     float m_highestCue;
 
     void Awake()
     {
+        //set up static instance
         if (Instance != null) throw new System.Exception();
         Instance = this;
 
+        //set up sanity values
         m_sanityPrevDay = m_sanity = m_initialSanity;
 
+        //set up coroutine runner
         m_endDayCoroutine = new Akir.Coroutine(this);
 
+        //calculate end of day minutes
         m_endOfDayMinutes = (m_endHour - m_startHour) * 60;
+
+        //set up routine controller dictionary
+        m_routinesDict = m_routines.ToDictionary(r => r.name, r => r);
+
+        //sort routines list
+        m_routineSchedules = m_routineSchedules.OrderBy(rs => rs.m_startHour).ToList();
     }
 
     void Start()
     {
-        foreach (RoutineController routine in m_routines)
-        {
-            GameObject checklistItem = Instantiate(m_checklistItemPrefab, m_checklistParent);
-            routine.Initialize(checklistItem);
-        }
         StartDay();
     }
 
@@ -76,10 +89,8 @@ public class GameManager : MonoBehaviour
         SetTimeBarAndText();
 
         //reset routine
-        foreach (RoutineController routine in m_routines)
-        {
-            routine.Enable();
-        }
+        m_nextRoutineScheduleIndex = 0;
+        foreach (RoutineController routine in m_routines) routine.ResetSchedulesAndSpawns();
 
         //reset enemies
         for (int X = m_enemies.Count - 1; X > -1; --X)
@@ -145,6 +156,16 @@ public class GameManager : MonoBehaviour
         {
             //advance time
             m_currentMinute += m_minutesPerSecond * Time.deltaTime;
+
+            //get current hour
+            int currentHour = GetCurrentHour();
+            while (m_nextRoutineScheduleIndex < m_routineSchedules.Count && m_routineSchedules[m_nextRoutineScheduleIndex].m_startHour <= currentHour)
+            {
+                //schedule new routines
+                AddThisRoutineSchedule(m_routineSchedules[m_nextRoutineScheduleIndex++]);
+            }
+
+            //auto end day
             if (m_currentMinute >= m_endOfDayMinutes)
             {
                 //you didn't bedge in time
@@ -156,6 +177,12 @@ public class GameManager : MonoBehaviour
 
         //update cue
         UpdateCue();
+    }
+
+    public void AddThisRoutineSchedule(RoutineSchedule addThisSchedule)
+    {
+        GameObject checklistItem = Instantiate(m_checklistItemPrefab, m_checklistParent);
+        m_routinesDict[addThisSchedule.m_where].AddSchedule(addThisSchedule, checklistItem);
     }
 
     //set sanity text

@@ -3,18 +3,48 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+public class RoutineScheduleHandler
+{
+    readonly RoutineSchedule m_schedule;
+    readonly TextMeshProUGUI m_checklistItemTextMesh;
+
+    public RoutineScheduleHandler(RoutineSchedule schedule, GameObject checklistItem)
+    {
+        m_schedule = schedule;
+        m_checklistItemTextMesh = checklistItem.GetComponent<TextMeshProUGUI>();
+    }
+
+    public void Complete()
+    {
+        m_checklistItemTextMesh.fontStyle = FontStyles.Strikethrough;
+        m_checklistItemTextMesh.color = Color.gray;
+
+        GameManager.Instance.GainSanity(m_schedule.m_sanityGainOnComplete);
+
+        foreach (RoutineSchedule addThisSchedule in m_schedule.m_triggerThese)
+        {
+            GameManager.Instance.AddThisRoutineSchedule(addThisSchedule);
+        }
+
+        if (m_schedule.m_skipHoursOnComplete > 0) GameManager.Instance.EndDay();
+    }
+
+    public bool TryToExpire(int currentHour)
+    {
+        if (m_schedule.m_endHour <= currentHour)
+        {
+            Object.Destroy(m_checklistItemTextMesh.gameObject);
+            return true;
+        }
+        return false;
+    }
+}
+
 public class RoutineController : MonoBehaviour
 {
-    [SerializeField] Color m_checklistCompleteColor, m_checklistColor;
-    [SerializeField, TextArea] string m_checklistText;
-
     //interactable
     [field:SerializeField] public int InteractionPointerCount { get; private set; }
-    bool m_isInteractable;
-
-    //sanity
-    [field:SerializeField] public float m_sanityGainOnComplete;
-    [field:SerializeField] public bool m_endDayOnComplete;
+    List<RoutineScheduleHandler> m_scheduleHandlers = new List<RoutineScheduleHandler>();
 
     //spawner (spawn rate is maxed out at min range)
     [SerializeField] float m_minSpawnDetectionRange, m_maxSpawnDetectionRange, m_secondsBetweenSpawn;
@@ -22,60 +52,44 @@ public class RoutineController : MonoBehaviour
 
     //component
     Transform m_transform;
-    GameObject m_checklistItem;
-    TextMeshProUGUI m_checklistItemTextMesh;
 
     void Awake()
     {
         m_transform = GetComponent<Transform>();
     }
 
-    public void Initialize(GameObject checklistItem)
+    public void AddSchedule(RoutineSchedule addThisSchedule, GameObject checklistItem)
     {
-        m_checklistItem = checklistItem;
-        m_checklistItemTextMesh = m_checklistItem.GetComponent<TextMeshProUGUI>();
-        m_checklistItemTextMesh.text = m_checklistText;
+        m_scheduleHandlers.Add(new RoutineScheduleHandler(addThisSchedule, checklistItem));
     }
 
-    public void Disable()
+    public void ResetSchedulesAndSpawns()
     {
-        enabled = false;
-        m_checklistItem.SetActive(false);
-
-        m_isInteractable = false;
-    }
-
-    public void Enable()
-    {
-        enabled = true;
-        m_checklistItem.SetActive(true);
-        m_checklistItemTextMesh.fontStyle = FontStyles.Normal;
-        m_checklistItemTextMesh.color = m_checklistColor;
-
-        m_isInteractable = true;
+        m_scheduleHandlers.Clear();
         m_spawnProgress = 0;
     }
 
     public void Complete()
     {
-        if (GameManager.Instance.IsEnteringNextDay || !m_isInteractable) return;
-
-        m_checklistItemTextMesh.fontStyle = FontStyles.Strikethrough;
-        m_checklistItemTextMesh.color = m_checklistCompleteColor;
-
-        m_isInteractable = false;
-        GameManager.Instance.GainSanity(m_sanityGainOnComplete);
-
-        if (m_endDayOnComplete) GameManager.Instance.EndDay();
+        if (GameManager.Instance.IsEnteringNextDay || m_scheduleHandlers.Count == 0) return;
+        m_scheduleHandlers[0].Complete();
+        m_scheduleHandlers.RemoveAt(0);
     }
 
     void Update()
     {
         if (GameManager.Instance.IsEnteringNextDay) return;
 
+        //check if expired
+        int currentHour = GameManager.Instance.GetCurrentHour();
+        for (int X = m_scheduleHandlers.Count - 1; X > -1; --X)
+        {
+            if (m_scheduleHandlers[X].TryToExpire(currentHour)) m_scheduleHandlers.RemoveAt(X);
+        }
+
         Vector2 position = m_transform.position;
         float sqDistanceToPlayer = (GameManager.Instance.Player.Position - position).sqrMagnitude;
-        if (m_isInteractable)
+        if (m_scheduleHandlers.Count > 0)
         {   
             //do interaction check
             GameManager.Instance.Player.CheckNearestRoutine(this, sqDistanceToPlayer);
