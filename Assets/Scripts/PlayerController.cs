@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,19 +9,26 @@ public class PlayerController : MonoBehaviour
 
     //latching mechanic
     public bool IsLatched { get; private set; } = false;
+    [SerializeField] GameObject m_quickTimeUI;
+
+    [SerializeField] float m_quickTimeProgressPerInput;
+    [SerializeField] float m_quickTimeLoss;
+    float m_quickTimeProgress;
 
     //components
     Rigidbody2D m_rigidbody;
+    Slider m_quickTimeSlider;
     public Vector2 Position => m_rigidbody.position;
 
     void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();
+        m_quickTimeSlider = m_quickTimeUI.GetComponent<Slider>();
     }
 
     public void Start()
     {
-        
+        m_quickTimeUI.SetActive(false);
     }
 
     void Update()
@@ -43,14 +51,29 @@ public class PlayerController : MonoBehaviour
         //update le quicktime event
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            EnemyController.GetFromPool(null).Initialize(Position);
+            //spam click to progress
+            m_quickTimeProgress += m_quickTimeProgressPerInput;
+        }
+        if (m_quickTimeProgress >= 1f)
+        {
+            //we done
+            EnemyController.GetFromPool(null).Initialize(Position + Random.insideUnitCircle);
+            m_quickTimeUI.SetActive(false);
             IsLatched = false;
+        }
+        else
+        {
+            //we aint done
+            m_quickTimeProgress -= m_quickTimeLoss * Time.deltaTime;
+            m_quickTimeSlider.value = m_quickTimeProgress;
         }
     }
 
     public void LatchOn()
     {
         //begin le quicktime event
+        m_quickTimeProgress = 0;
+        m_quickTimeUI.SetActive(true);
         IsLatched = true;
     }
 }
