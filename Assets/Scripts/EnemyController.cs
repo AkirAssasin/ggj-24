@@ -10,6 +10,7 @@ public class EnemyController : PoolableObject<EnemyController>
     Akir.Coroutine m_spawnCoroutine;
 
     //components
+    Animator m_animator;
     Transform m_transform;
     Rigidbody2D m_rigidbody;
     Collider2D m_collider;
@@ -19,6 +20,7 @@ public class EnemyController : PoolableObject<EnemyController>
     {
         m_spawnCoroutine = new Akir.Coroutine(this);
 
+        m_animator = GetComponent<Animator>();
         m_transform = GetComponent<Transform>();
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_collider = GetComponent<Collider2D>();
@@ -33,8 +35,14 @@ public class EnemyController : PoolableObject<EnemyController>
         m_collider.enabled = true;
         m_renderer.enabled = true;
 
-        IEnumerator SpawnWaitHack() { yield return new Akir.WaitForSeconds(2); }
+        m_animator.SetBool("IsWalking", false);
+        IEnumerator SpawnWaitHack()
+        {
+            yield return new Akir.WaitForSeconds(2);
+            m_animator.SetBool("IsWalking", true);
+        }
         m_spawnCoroutine.Start(SpawnWaitHack());
+
     }
 
     public new void Pool()

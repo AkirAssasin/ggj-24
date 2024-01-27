@@ -40,12 +40,14 @@ public class PlayerController : MonoBehaviour
     float m_barProgressSpeedMultiplier = 1f;
 
     //components
+    Animator m_animator;
     Rigidbody2D m_rigidbody;
     Slider m_quickTimeSlider;
     public Vector2 Position => m_rigidbody.position;
 
     void Awake()
     {
+        m_animator = GetComponent<Animator>();
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_quickTimeSlider = m_quickTimeUI.GetComponent<Slider>();
     }
@@ -131,8 +133,16 @@ public class PlayerController : MonoBehaviour
             float speed = m_walkSpeed;
             if (IsLatched) speed *= m_latchedSpeedMultiplier;
             m_rigidbody.velocity = input / inputLength * speed;
+
+            //set walking
+            m_animator.SetBool("IsWalking", true);
         }
-        else m_rigidbody.velocity = Vector2.zero;
+        else
+        {
+            //set not walking
+            m_animator.SetBool("IsWalking", false);
+            m_rigidbody.velocity = Vector2.zero;
+        }
     }
 
     void CancelInteraction()
