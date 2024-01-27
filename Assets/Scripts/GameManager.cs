@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour
     float m_currentMinute;
     int m_endOfDayMinutes;
 
+    //cues
+    float m_highestCue;
+
     void Awake()
     {
         if (Instance != null) throw new System.Exception();
@@ -112,6 +115,16 @@ public class GameManager : MonoBehaviour
         m_timeTextMesh.text = $"{hours:00}:{minutes:00} {meridian}";
     }
 
+    public void SetHighestCue(float cue)
+    {
+        m_highestCue = Mathf.Max(m_highestCue, cue);
+    }
+
+    void UpdateCue()
+    {
+        m_highestCue = 0;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -129,8 +142,8 @@ public class GameManager : MonoBehaviour
             SetTimeBarAndText();
         }
 
-        //debug key
-        if (Input.GetKeyDown(KeyCode.Space)) SpawnEnemy(Random.insideUnitCircle * 5f);
+        //update cue
+        UpdateCue();
     }
 
     //set sanity text

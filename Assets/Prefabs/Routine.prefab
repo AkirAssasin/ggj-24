@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2795841236232848760}
-  - component: {fileID: 544411184364030098}
   - component: {fileID: 3851937262660315396}
+  - component: {fileID: 544411184364030098}
   m_Layer: 0
   m_Name: Routine
   m_TagString: Untagged
@@ -31,8 +31,29 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3851937262660315396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1696237716277917246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d8e1c7d685b31d42af4b34053e76cd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_checklistCompleteColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_checklistColor: {r: 1, g: 1, b: 1, a: 1}
+  m_checklistText: 
+  <InteractionPointerCount>k__BackingField: 0
+  m_sanityGainOnComplete: 0
+  m_endDayOnComplete: 0
+  m_minSpawnDetectionRange: 1
+  m_maxSpawnDetectionRange: 3
+  m_secondsBetweenSpawn: 5
 --- !u!212 &544411184364030098
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -85,18 +106,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3851937262660315396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1696237716277917246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d8e1c7d685b31d42af4b34053e76cd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_checklistCompleteColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_checklistColor: {r: 1, g: 1, b: 1, a: 1}
-  m_checklistText: 

@@ -16,6 +16,10 @@ public class RoutineController : MonoBehaviour
     [field:SerializeField] public float m_sanityGainOnComplete;
     [field:SerializeField] public bool m_endDayOnComplete;
 
+    //spawner (spawn rate is maxed out at min range)
+    [SerializeField] float m_minSpawnDetectionRange, m_maxSpawnDetectionRange, m_secondsBetweenSpawn;
+    float m_spawnProgress;
+
     //component
     Transform m_transform;
     GameObject m_checklistItem;
@@ -49,6 +53,7 @@ public class RoutineController : MonoBehaviour
         m_checklistItemTextMesh.color = m_checklistColor;
 
         m_isInteractable = true;
+        m_spawnProgress = 0;
     }
 
     public void Complete()
@@ -66,12 +71,29 @@ public class RoutineController : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsEnteringNextDay) return;
+
+        Vector2 position = m_transform.position;
+        float sqDistanceToPlayer = (GameManager.Instance.Player.Position - position).sqrMagnitude;
         if (m_isInteractable)
-        {
-            Vector2 position = m_transform.position;
-            float sqDistanceToPlayer = (GameManager.Instance.Player.Position - position).sqrMagnitude;
+        {   
+            //do interaction check
             GameManager.Instance.Player.CheckNearestRoutine(this, sqDistanceToPlayer);
         }
+
+        float minSq = m_minSpawnDetectionRange * m_minSpawnDetectionRange;
+        float maxSq = m_maxSpawnDetectionRange * m_maxSpawnDetectionRange;
+        float t = 1f - Mathf.Clamp01((sqDistanceToPlayer - minSq) / (maxSq - minSq));
+
+        //do spawn
+        m_spawnProgress += Time.deltaTime * t / m_secondsBetweenSpawn;
+        if (m_spawnProgress >= 1f)
+        {
+            m_spawnProgress -= 1f;
+            GameManager.Instance.SpawnEnemy(m_transform.position);
+        }
+
+        GameManager.Instance.SetHighestCue(t * m_spawnProgress);
     }
 
     public void GetInteractionBarRange(out float min, out float max)

@@ -1669,7 +1669,7 @@ MonoBehaviour:
   m_sanityTextDuration: 2
   m_startHour: 8
   m_endHour: 22
-  m_minutesPerSecond: 60
+  m_minutesPerSecond: 2
   m_timeTextMesh: {fileID: 1496554511}
   m_timeBar: {fileID: 285982242}
 --- !u!4 &1548886355
