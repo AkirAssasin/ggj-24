@@ -48,7 +48,7 @@ MonoBehaviour:
   <InteractionPointerCount>k__BackingField: 1
   m_minSpawnDetectionRange: 0.5
   m_maxSpawnDetectionRange: 2
-  m_secondsBetweenSpawn: 5
+  m_secondsBetweenSpawn: 3
 --- !u!61 &-6532030085943703431
 BoxCollider2D:
   m_ObjectHideFlags: 0

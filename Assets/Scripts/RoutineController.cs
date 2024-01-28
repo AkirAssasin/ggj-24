@@ -105,6 +105,7 @@ public class RoutineController : MonoBehaviour
         float minSq = m_minSpawnDetectionRange * m_minSpawnDetectionRange;
         float maxSq = m_maxSpawnDetectionRange * m_maxSpawnDetectionRange;
         float t = 1f - Mathf.Clamp01((sqDistanceToPlayer - minSq) / (maxSq - minSq));
+        t *= 1f - GameManager.Instance.GetSanity();
 
         //do spawn
         m_spawnProgress += Time.deltaTime * t / m_secondsBetweenSpawn;

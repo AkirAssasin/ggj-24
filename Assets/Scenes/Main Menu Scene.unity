@@ -507,7 +507,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: any key to continue
+  m_text: any key to start
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 93add045ee2ea4549a671063b6605a24, type: 2}
   m_sharedMaterial: {fileID: -5095051006126615957, guid: 93add045ee2ea4549a671063b6605a24, type: 2}
@@ -1090,7 +1090,7 @@ MonoBehaviour:
   m_endScreenText: {fileID: 2104885486}
   m_laughLingerDuration: 2
   m_anyKeyWaitDuration: 2
-  m_delayPerKey: 0.1
+  m_delayPerKey: 0.05
   m_titleSwitchAudioClip: {fileID: 11400000, guid: f16a045f9ef97e94bb871ce88ae235f1, type: 2}
   m_goodEndText: 'it would be a waste if I kept crying
 

@@ -143,6 +143,8 @@ public class GameManager : MonoBehaviour
         m_sanity = Mathf.Clamp01(m_sanity + amount);
     }
 
+    public float GetSanity() => m_sanity;
+
     public void SpawnEnemy(Vector2 position, float volumeMult)
     {
         EnemyController enemy = EnemyController.GetFromPool(m_enemyPrefab);
@@ -203,7 +205,7 @@ public class GameManager : MonoBehaviour
 
     void LoseSanity(float hoursPassed)
     {
-        m_sanity -= m_sanityLossPerDay * hoursPassed / (m_endHour - m_startHour);
+        m_sanity = Mathf.Clamp01(m_sanity - m_sanityLossPerDay * hoursPassed / (m_endHour - m_startHour));
     }
 
     // Update is called once per frame
