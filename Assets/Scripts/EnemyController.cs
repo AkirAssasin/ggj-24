@@ -71,7 +71,7 @@ public class EnemyController : PoolableObject<EnemyController>
         m_rigidbody.velocity = input * m_walkSpeed;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
         //can latch onto player?
         if (m_spawnCoroutine.Running || GameManager.Instance.IsFastForwarding || GameManager.Instance.Player.IsLatched) return;

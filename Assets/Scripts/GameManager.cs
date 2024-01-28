@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
 
     //time
     [SerializeField] int m_startHour, m_endHour;
-    [SerializeField] float m_minutesPerSecond;
+    [SerializeField] float m_minutesPerSecond, m_minutesPerSecondWhenLatched;
     [SerializeField] TextMeshProUGUI m_timeTextMesh;
     [SerializeField] Slider m_timeBar;
     float m_currentMinute;
@@ -191,7 +191,16 @@ public class GameManager : MonoBehaviour
         {
             //advance time
             int prevHour = GetCurrentHour();
-            m_currentMinute += m_minutesPerSecond * Time.deltaTime;
+            if (Player.IsLatched)
+            {
+                m_currentMinute += m_minutesPerSecondWhenLatched * Time.deltaTime;
+            }
+            else
+            {
+                m_currentMinute += m_minutesPerSecond * Time.deltaTime;
+            }
+
+            //check if next hour
             int currentHour = GetCurrentHour();
             if (prevHour != currentHour)
             {
