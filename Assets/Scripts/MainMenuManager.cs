@@ -21,6 +21,8 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        EnvironmentCycler.s_speed = 1f;
+
         m_animCoroutine = new Akir.Coroutine(this);
         m_audioSource = GetComponent<AudioSource>();
 

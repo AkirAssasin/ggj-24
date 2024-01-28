@@ -38,8 +38,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] AudioClipGroup m_spawnAudioClip, m_latchAudioClip, m_clickAudioClip;
 
+    //sprites
+    [SerializeField] SpriteRenderer m_rendererA, m_rendererB;
+    [SerializeField] Sprite m_idleA, m_idleB, m_latchA, m_latchB;
+
     //components
-    Animator m_animator;
     Rigidbody2D m_rigidbody;
     Slider m_quickTimeSlider;
     AudioSource m_audioSource;
@@ -48,7 +51,6 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        m_animator = GetComponent<Animator>();
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_quickTimeSlider = m_quickTimeUI.GetComponent<Slider>();
         m_audioSource = GetComponent<AudioSource>();
@@ -59,12 +61,22 @@ public class PlayerController : MonoBehaviour
         m_quickTimeUI.SetActive(false);
         m_interactionPromptGO.SetActive(false);
         m_interactionBarParent.SetActive(false);
+        
+        m_rendererA.sprite = m_idleA;
+        m_rendererB.sprite = m_idleB;
     }
 
     void Update()
     {
         //update latching
-        if (IsLatched) UpdateLatch();
+        if (IsLatched)
+        {
+            UpdateLatch();
+        }
+        else if (m_quickTimeProgress > 0)
+        {
+            m_quickTimeProgress = Mathf.Max(0, m_quickTimeProgress - Time.deltaTime);
+        }
 
         //recover stun
         if (m_barProgressSpeedMultiplier < 1)
@@ -104,17 +116,23 @@ public class PlayerController : MonoBehaviour
             CancelInteraction();
 
             //set as velocity
-            float speed = m_walkSpeed;
+            float speed = m_walkSpeed * Random.value;
             if (IsLatched) speed *= m_latchedSpeedMultiplier;
             m_rigidbody.velocity = input / inputLength * speed;
 
-            //set walking
-            m_animator.SetBool("IsWalking", true);
+            //set render flip
+            if (input.x < 0)
+            {
+                m_rendererA.flipX = m_rendererB.flipX = false;
+            }
+            else if (input.x > 0)
+            {
+                m_rendererA.flipX = m_rendererB.flipX = true;
+            }
         }
         else
         {
             //set not walking
-            m_animator.SetBool("IsWalking", false);
             m_rigidbody.velocity = Vector2.zero;
         }
     }
@@ -226,6 +244,8 @@ public class PlayerController : MonoBehaviour
             m_quickTimeProgress = Mathf.Max(0, m_quickTimeProgress - m_quickTimeLoss * Time.deltaTime);
             m_quickTimeSlider.value = m_quickTimeProgress;
 
+            EnvironmentCycler.s_speed = (2f - m_quickTimeProgress) * 2;
+
             GameManager.Instance.Camera.NormalizedZoomLevel = 1f - m_quickTimeProgress * 0.5f;
         }
     }
@@ -234,23 +254,29 @@ public class PlayerController : MonoBehaviour
     {
         if (IsLatched)
         {
-            GameManager.Instance.SpawnEnemy(Position + Random.insideUnitCircle, 0);
+            m_quickTimeProgress /= 2;
+
+            GameManager.Instance.SpawnEnemy(Position, 0);
             m_quickTimeUI.SetActive(false);
             IsLatched = false;
-            m_animator.SetBool("IsLatched", false);
             
             GameManager.Instance.Camera.NormalizedZoomLevel = 0;
+            EnvironmentCycler.s_speed = 1f;
+
+            m_rendererA.sprite = m_idleA;
+            m_rendererB.sprite = m_idleB;
         }
     }
 
     public void LatchOn(float volumeMult)
     {
         //begin le quicktime event
-        m_quickTimeProgress = 0;
         m_quickTimeUI.SetActive(true);
         IsLatched = true;
-        m_animator.SetBool("IsLatched", true);
         m_latchAudioClip.PlayOneShot(m_audioSource, volumeMult);
+
+        m_rendererA.sprite = m_latchA;
+        m_rendererB.sprite = m_latchB;
     }
 
     public void PlaySpawnSound(float volumeMult)

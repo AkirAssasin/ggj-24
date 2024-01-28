@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnvironmentCycler : MonoBehaviour
 {
+    public static float s_speed = 1f;
+
     [SerializeField] SpriteRenderer[] m_renderers;
     Color[] m_colors;
     [SerializeField] float m_durationPerCycle, m_offAlpha, m_onAlpha;
@@ -17,7 +19,7 @@ public class EnvironmentCycler : MonoBehaviour
 
         IEnumerator CyclerCoroutine()
         {
-            Akir.WaitForSeconds wait = new Akir.WaitForSeconds(m_durationPerCycle);
+            Akir.WaitForSeconds wait = new Akir.WaitForSeconds(m_durationPerCycle, () => s_speed);
             while (true)
             {
                 for (int X = 0; X < m_renderers.Length; ++X)

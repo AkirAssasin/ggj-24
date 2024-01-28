@@ -5,26 +5,23 @@ using UnityEngine;
 public class EnemyController : PoolableObject<EnemyController>
 {
     [SerializeField] float m_walkSpeed;
+    [SerializeField] SpriteRenderer[] m_renderers;
 
     //coroutine
     Akir.Coroutine m_spawnCoroutine;
 
     //components
-    Animator m_animator;
     Transform m_transform;
     Rigidbody2D m_rigidbody;
     Collider2D m_collider;
-    SpriteRenderer m_renderer;
 
     void Awake()
     {
         m_spawnCoroutine = new Akir.Coroutine(this);
 
-        m_animator = GetComponent<Animator>();
         m_transform = GetComponent<Transform>();
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_collider = GetComponent<Collider2D>();
-        m_renderer = GetComponent<SpriteRenderer>();
     }
 
     public void Initialize(Vector2 position)
@@ -33,13 +30,12 @@ public class EnemyController : PoolableObject<EnemyController>
 
         m_rigidbody.simulated = true;
         m_collider.enabled = true;
-        m_renderer.enabled = true;
 
-        m_animator.SetBool("IsWalking", false);
+        foreach (SpriteRenderer renderer in m_renderers) renderer.enabled = true;
+
         IEnumerator SpawnWaitHack()
         {
             yield return new Akir.WaitForSeconds(2);
-            m_animator.SetBool("IsWalking", true);
         }
         m_spawnCoroutine.Start(SpawnWaitHack());
 
@@ -54,7 +50,7 @@ public class EnemyController : PoolableObject<EnemyController>
 
             m_rigidbody.simulated = false;
             m_collider.enabled = false;
-            m_renderer.enabled = false;
+            foreach (SpriteRenderer renderer in m_renderers) renderer.enabled = false;
         }
     }
 
@@ -68,7 +64,17 @@ public class EnemyController : PoolableObject<EnemyController>
         input.Normalize();
 
         //set as velocity
-        m_rigidbody.velocity = input * m_walkSpeed;
+        m_rigidbody.velocity = input * Random.value * m_walkSpeed;
+
+        //set render flip
+        if (input.x < 0)
+        {
+            foreach (SpriteRenderer renderer in m_renderers) renderer.flipX = false;
+        }
+        else if (input.x > 0)
+        {
+            foreach (SpriteRenderer renderer in m_renderers) renderer.flipX = true;
+        }
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -81,7 +87,7 @@ public class EnemyController : PoolableObject<EnemyController>
         if (player == null) return;
 
         //latch onto player, then pool
-        player.LatchOn(0);
+        player.LatchOn(0.1f);
         Pool();
     }
 }
