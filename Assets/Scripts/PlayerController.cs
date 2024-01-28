@@ -77,16 +77,22 @@ public class PlayerController : MonoBehaviour
         {
             UpdateInteraction();
         }
-        else if (Input.GetKeyDown(KeyCode.X))
+        else
         {
+            bool hasInteractable = false;
             for (int X = 0; X < m_touchingTheseRoutines.Count; ++X)
             {
                 if (m_touchingTheseRoutines[X].IsInteractable())
                 {
-                    StartInteraction(m_touchingTheseRoutines[X]);
+                    hasInteractable = true;
+                    if (Input.GetKeyDown(KeyCode.X))
+                    {
+                        StartInteraction(m_touchingTheseRoutines[X]);
+                    }
                     break;
                 }
             }
+            m_interactionPromptGO.SetActive(hasInteractable);
         }
 
         //get input
@@ -259,7 +265,6 @@ public class PlayerController : MonoBehaviour
         if (routine != null)
         {
             m_touchingTheseRoutines.Add(routine);
-            m_interactionPromptGO.SetActive(true);
         }
     }
 
@@ -269,7 +274,6 @@ public class PlayerController : MonoBehaviour
         if (routine != null)
         {
             m_touchingTheseRoutines.RemoveAll(r => r == routine);
-            m_interactionPromptGO.SetActive(m_touchingTheseRoutines.Count > 0);
         }
     }
 }
