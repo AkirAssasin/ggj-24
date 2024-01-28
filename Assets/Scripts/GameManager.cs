@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -85,6 +86,22 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         StartDay();
+
+        //do fade in
+        m_sanityBlackoutGroup.alpha = 1;
+        SetSanityText(0);
+        IEnumerator FadeInCoroutine()
+        {
+            //wait
+            yield return new Akir.WaitForSeconds(m_sanityTextDuration);
+
+            //fade out
+            yield return new RunForDuration(m_sanityBlackoutFadeDuration, t =>
+            {
+                m_sanityBlackoutGroup.alpha = 1f - m_sanityFadeCurve.Evaluate(t);
+            });
+        }
+        m_fastForwardCoroutine.Start(FadeInCoroutine());
     }
 
     void StartDay()
@@ -277,6 +294,20 @@ public class GameManager : MonoBehaviour
             //sanity display
             yield return new RunForDuration(m_sanityTextDuration, t => SetSanityText(t * t));
             m_sanityPrevShown = m_sanity;
+
+            //if 0 or 100%, return to main menu
+            if (m_sanity <= 0)
+            {
+                MainMenuManager.Type = MainMenuManager.MenuType.BadEnd;
+                SceneManager.LoadScene(0);
+                yield break;
+            }
+            else if (m_sanity >= 1)
+            {
+                MainMenuManager.Type = MainMenuManager.MenuType.GoodEnd;
+                SceneManager.LoadScene(0);
+                yield break;
+            }
 
             //start day
             if (willEndDay)
