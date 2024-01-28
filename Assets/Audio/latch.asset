@@ -15,4 +15,4 @@ MonoBehaviour:
   m_clips:
   - {fileID: 8300000, guid: ca74bce362e33a2488213198a1fb2b7e, type: 3}
   m_volume: 1
-  m_minInterval: 2
+  m_minInterval: 0.5

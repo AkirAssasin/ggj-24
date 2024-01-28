@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] float MinZoomOrthoSize, MaxZoomOrthoSize, MaxFollow;
+    [SerializeField] float m_edgeX;
+    [SerializeField] float m_minZoomOrthoSize, m_maxZoomOrthoSize, m_maxFollow;
 
     Vector2 m_originalPosition;
     float m_originalZ;
@@ -28,8 +29,9 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        Vector2 currentPosition = Vector2.Lerp(m_originalPosition, GameManager.Instance.Player.Position, NormalizedZoomLevel * MaxFollow);
+        m_originalPosition.x = m_edgeX - Mathf.Lerp(m_maxZoomOrthoSize, m_minZoomOrthoSize, m_maxFollow) * m_camera.aspect;
+        Vector2 currentPosition = Vector2.Lerp(m_originalPosition, GameManager.Instance.Player.Position, NormalizedZoomLevel * m_maxFollow);
         m_transform.position = new Vector3(currentPosition.x, currentPosition.y, m_originalZ);
-        m_camera.orthographicSize = Mathf.Lerp(MinZoomOrthoSize, MaxZoomOrthoSize, NormalizedZoomLevel);
+        m_camera.orthographicSize = Mathf.Lerp(m_minZoomOrthoSize, m_maxZoomOrthoSize, NormalizedZoomLevel);
     }
 }

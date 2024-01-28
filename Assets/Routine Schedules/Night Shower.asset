@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Night Shower
   m_EditorClassIdentifier: 
   m_where: Shower
-  m_startHour: 18
+  m_startHour: 17
   m_endHour: 22
   m_checklistText: shower
   m_sanityGainOnComplete: 0.05

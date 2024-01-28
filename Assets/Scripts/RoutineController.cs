@@ -105,23 +105,25 @@ public class RoutineController : MonoBehaviour
         float minSq = m_minSpawnDetectionRange * m_minSpawnDetectionRange;
         float maxSq = m_maxSpawnDetectionRange * m_maxSpawnDetectionRange;
         float t = 1f - Mathf.Clamp01((sqDistanceToPlayer - minSq) / (maxSq - minSq));
-        t *= 1f - GameManager.Instance.GetSanity();
 
         //do spawn
-        m_spawnProgress += Time.deltaTime * t / m_secondsBetweenSpawn;
-        if (m_spawnProgress >= 1f)
+        if (!GameManager.Instance.Player.IsLatched)
         {
-            m_spawnProgress -= 1f;
-            if (GameManager.Instance.Player.IsLatched)
+            float sanity = GameManager.Instance.GetSanity();
+            m_spawnProgress += Time.deltaTime * (1f - sanity) * t / m_secondsBetweenSpawn;
+            if (m_spawnProgress >= 1f)
             {
-                GameManager.Instance.SpawnEnemy(m_transform.position, t);
-            }
-            else
-            {
-                GameManager.Instance.Player.LatchOn(1f);
+                m_spawnProgress -= 1f;
+                if (t > sanity)
+                {
+                    GameManager.Instance.Player.LatchOn(1f);
+                }
+                else
+                {
+                    GameManager.Instance.SpawnEnemy(position, t);
+                }
             }
         }
-
         GameManager.Instance.SetHighestCue(t * m_spawnProgress);
     }
 

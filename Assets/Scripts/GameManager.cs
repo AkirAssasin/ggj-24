@@ -140,10 +140,10 @@ public class GameManager : MonoBehaviour
 
     public void GainSanity(float amount)
     {
-        m_sanity = Mathf.Clamp01(m_sanity + amount);
+        m_sanity += amount;
     }
 
-    public float GetSanity() => m_sanity;
+    public float GetSanity() => Mathf.Clamp01(m_sanity);
 
     public void SpawnEnemy(Vector2 position, float volumeMult)
     {
@@ -205,7 +205,8 @@ public class GameManager : MonoBehaviour
 
     void LoseSanity(float hoursPassed)
     {
-        m_sanity = Mathf.Clamp01(m_sanity - m_sanityLossPerDay * hoursPassed / (m_endHour - m_startHour));
+        float loss = m_sanityLossPerDay * hoursPassed / (m_endHour - m_startHour);
+        m_sanity = Mathf.Clamp01(m_sanity - loss);
     }
 
     // Update is called once per frame
@@ -263,7 +264,7 @@ public class GameManager : MonoBehaviour
     //set sanity text
     void SetSanityText(float t)
     {
-        int currentSanity = (int)(100 * Mathf.Lerp(m_sanityPrevShown, m_sanity, t));
+        int currentSanity = (int)(100 * Mathf.Lerp(m_sanityPrevShown, GetSanity(), t));
         m_sanityTextMesh.text = $"{currentSanity:00}%";
     }
 
@@ -295,7 +296,7 @@ public class GameManager : MonoBehaviour
 
             //sanity display
             yield return new RunForDuration(m_sanityTextDuration, t => SetSanityText(t * t));
-            m_sanityPrevShown = m_sanity;
+            m_sanityPrevShown = GetSanity();
 
             //if 0 or 100%, return to main menu
             if (m_sanity <= 0)

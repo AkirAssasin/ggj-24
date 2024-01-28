@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Eat Dinner
   m_EditorClassIdentifier: 
   m_where: Dining Table
-  m_startHour: 18
+  m_startHour: 17
   m_endHour: 22
   m_checklistText: eat dinner at the table
   m_sanityGainOnComplete: 0.2

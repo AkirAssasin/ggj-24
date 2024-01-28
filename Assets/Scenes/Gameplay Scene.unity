@@ -1334,7 +1334,7 @@ MonoBehaviour:
   - {fileID: 655704142}
   m_durationPerCycle: 0.5
   m_offAlpha: 0.1
-  m_onAlpha: 0.9
+  m_onAlpha: 0.6
 --- !u!1 &458044058
 GameObject:
   m_ObjectHideFlags: 0
@@ -1662,9 +1662,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23cd62b32dac87d46b1788bd407e4619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinZoomOrthoSize: 5
-  MaxZoomOrthoSize: 3
-  MaxFollow: 0.4
+  m_edgeX: 9
+  m_minZoomOrthoSize: 5
+  m_maxZoomOrthoSize: 3
+  m_maxFollow: 0.3
 --- !u!1001 &572269174
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5658,7 +5659,7 @@ MonoBehaviour:
   - {fileID: 2106523653}
   m_durationPerCycle: 0.5
   m_offAlpha: 0.1
-  m_onAlpha: 0.9
+  m_onAlpha: 0.6
 --- !u!1 &2084185602
 GameObject:
   m_ObjectHideFlags: 0
