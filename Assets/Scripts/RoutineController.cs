@@ -113,9 +113,12 @@ public class RoutineController : MonoBehaviour
             m_spawnProgress -= 1f;
             if (t < 0.5f || GameManager.Instance.Player.IsLatched)
             {
-                GameManager.Instance.SpawnEnemy(m_transform.position);
+                GameManager.Instance.SpawnEnemy(m_transform.position, t);
             }
-            else GameManager.Instance.Player.LatchOn();
+            else
+            {
+                GameManager.Instance.Player.LatchOn(1f);
+            }
         }
 
         GameManager.Instance.SetHighestCue(t * m_spawnProgress);

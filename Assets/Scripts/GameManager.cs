@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
 
     //cues
     float m_highestCue;
+    AudioSource m_cueAudioSource;
 
     void Awake()
     {
@@ -76,6 +77,9 @@ public class GameManager : MonoBehaviour
 
         //sort routines list
         m_routineSchedules = m_routineSchedules.OrderBy(rs => rs.m_startHour).ToList();
+
+        //get component
+        m_cueAudioSource = GetComponent<AudioSource>();
     }
 
     void Start()
@@ -122,11 +126,12 @@ public class GameManager : MonoBehaviour
         m_sanity = Mathf.Clamp01(m_sanity + amount);
     }
 
-    public void SpawnEnemy(Vector2 position)
+    public void SpawnEnemy(Vector2 position, float volumeMult)
     {
         EnemyController enemy = EnemyController.GetFromPool(m_enemyPrefab);
         m_enemies.Add(enemy);
         enemy.Initialize(position);
+        Player.PlaySpawnSound(volumeMult);
     }
 
     public void UnregisterEnemy(EnemyController enemy) => m_enemies.Remove(enemy);
@@ -158,6 +163,7 @@ public class GameManager : MonoBehaviour
 
     void UpdateCue()
     {
+        m_cueAudioSource.volume = m_highestCue;
         m_highestCue = 0;
     }
 

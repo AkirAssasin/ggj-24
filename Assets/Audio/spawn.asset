@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94af36fc641c61a43bf5d8ed5daec5d1, type: 3}
+  m_Name: spawn
+  m_EditorClassIdentifier: 
+  m_clips:
+  - {fileID: 8300000, guid: 0c59a655fee3a324da356d1d3837ae96, type: 3}
+  m_volume: 1
+  m_minInterval: 1

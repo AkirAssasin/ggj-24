@@ -81,7 +81,7 @@ public class EnemyController : PoolableObject<EnemyController>
         if (player == null) return;
 
         //latch onto player, then pool
-        player.LatchOn();
+        player.LatchOn(0);
         Pool();
     }
 }

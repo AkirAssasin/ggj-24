@@ -17,10 +17,11 @@ public class AudioClipGroup : ScriptableObject
     float m_lastPlayedTime = 0;
 
     // play
-    public void PlayOneShot(AudioSource audioSource)
+    public void PlayOneShot(AudioSource audioSource, float volumeMult = 1)
     {
+        if (volumeMult <= 0) return;
         if (Time.time >= m_lastPlayedTime && Time.time - m_lastPlayedTime < m_minInterval) return;
         m_lastPlayedTime = Time.time;
-        audioSource.PlayOneShot(m_clips[Random.Range(0, m_clips.Count)], m_volume);
+        audioSource.PlayOneShot(m_clips[Random.Range(0, m_clips.Count)], m_volume * volumeMult);
     }
 }

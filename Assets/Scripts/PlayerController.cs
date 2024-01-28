@@ -36,10 +36,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float m_barStunRecoverySpeed;
     float m_barProgressSpeedMultiplier = 1f;
 
+    [SerializeField] AudioClipGroup m_spawnAudioClip, m_latchAudioClip, m_clickAudioClip;
+
     //components
     Animator m_animator;
     Rigidbody2D m_rigidbody;
     Slider m_quickTimeSlider;
+    AudioSource m_audioSource;
+
     public Vector2 Position => m_rigidbody.position;
 
     void Awake()
@@ -47,6 +51,7 @@ public class PlayerController : MonoBehaviour
         m_animator = GetComponent<Animator>();
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_quickTimeSlider = m_quickTimeUI.GetComponent<Slider>();
+        m_audioSource = GetComponent<AudioSource>();
     }
 
     public void Start()
@@ -134,6 +139,7 @@ public class PlayerController : MonoBehaviour
         {
             if (m_barRangeMin <= actualBarValue && actualBarValue <= m_barRangeMax)
             {
+                m_clickAudioClip.PlayOneShot(m_audioSource);
                 --m_interactionPointerCount;
                 m_interactionPointers[m_interactionPointerCount].SetActive(false);
                 if (m_interactionPointerCount == 0)
@@ -222,7 +228,7 @@ public class PlayerController : MonoBehaviour
     {
         if (IsLatched)
         {
-            GameManager.Instance.SpawnEnemy(Position + Random.insideUnitCircle);
+            GameManager.Instance.SpawnEnemy(Position + Random.insideUnitCircle, 0);
             m_quickTimeUI.SetActive(false);
             IsLatched = false;
             m_animator.SetBool("IsLatched", false);
@@ -231,13 +237,20 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void LatchOn()
+    public void LatchOn(float volumeMult)
     {
         //begin le quicktime event
         m_quickTimeProgress = 0;
         m_quickTimeUI.SetActive(true);
         IsLatched = true;
         m_animator.SetBool("IsLatched", true);
+        m_latchAudioClip.PlayOneShot(m_audioSource, volumeMult);
+    }
+
+    public void PlaySpawnSound(float volumeMult)
+    {
+        //it's dumb to do this here but we're pressed for time
+        m_spawnAudioClip.PlayOneShot(m_audioSource, volumeMult);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
