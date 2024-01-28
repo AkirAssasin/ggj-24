@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 175923804}
   - component: {fileID: 175923806}
   - component: {fileID: 175923805}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: World Space Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -634,10 +634,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Watch TV
@@ -648,19 +644,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 2.652607
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1.5211749
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5
+      value: 3.3695
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.5
+      value: 5.8916
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.z
@@ -707,6 +703,10 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
+      propertyPath: <InteractionPointerCount>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: <m_interactionPointerCount>k__BackingField
       value: 3
       objectReference: {fileID: 0}
@@ -726,7 +726,7 @@ GameObject:
   - component: {fileID: 199757054}
   - component: {fileID: 199757056}
   - component: {fileID: 199757055}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1188,7 +1188,7 @@ GameObject:
   m_Component:
   - component: {fileID: 363524640}
   - component: {fileID: 363524641}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Quicktime UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1475,7 +1475,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b92c9fdb3cc16e74a815f34d0c845b19, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.30588236}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1512,7 +1512,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 458044059}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Pointer Parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1925,10 +1925,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Exit
@@ -1943,7 +1939,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.4343
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1951,7 +1947,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.5
+      value: -0.7828
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2680,10 +2676,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Dining Table
@@ -2694,19 +2686,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1.4996
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.1958
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.5
+      value: 3.7502
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.5
+      value: 2.5979
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2751,6 +2743,10 @@ PrefabInstance:
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_sanityGainOnComplete
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
+      propertyPath: <InteractionPointerCount>k__BackingField
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: <m_interactionPointerCount>k__BackingField
@@ -2900,7 +2896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 778296056}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2939,7 +2935,7 @@ GameObject:
   - component: {fileID: 812392630}
   - component: {fileID: 812392632}
   - component: {fileID: 812392631}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3015,7 +3011,7 @@ GameObject:
   - component: {fileID: 830581732}
   - component: {fileID: 830581734}
   - component: {fileID: 830581733}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Tooltip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3147,10 +3143,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Bookcase
@@ -3218,6 +3210,10 @@ PrefabInstance:
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_sanityGainOnComplete
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
+      propertyPath: <InteractionPointerCount>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: <m_interactionPointerCount>k__BackingField
@@ -3445,7 +3441,7 @@ GameObject:
   - component: {fileID: 1116884569}
   - component: {fileID: 1116884571}
   - component: {fileID: 1116884570}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Tooltip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3979,10 +3975,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Sink
@@ -3993,19 +3985,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.0218192
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 0.6954
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 2.1631
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.6523
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4052,6 +4044,10 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
+      propertyPath: <InteractionPointerCount>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: <m_interactionPointerCount>k__BackingField
       value: 3
       objectReference: {fileID: 0}
@@ -4070,7 +4066,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1464661549}
   - component: {fileID: 1464661551}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Interaction UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4250,10 +4246,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Gaming Rig
@@ -4264,19 +4256,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.3045564
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 1.1088
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.1959
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 2.0544
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4321,6 +4313,10 @@ PrefabInstance:
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_sanityGainOnComplete
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
+      propertyPath: <InteractionPointerCount>k__BackingField
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: <m_interactionPointerCount>k__BackingField
@@ -4508,9 +4504,21 @@ MonoBehaviour:
   - {fileID: 1163326288}
   - {fileID: 1163053803}
   m_routineSchedules:
+  - {fileID: 11400000, guid: 260bb3492d9bf5b49bf38072082d2dfb, type: 2}
+  - {fileID: 11400000, guid: 86a0714e972174b4c87ae5f3e77c6a1b, type: 2}
+  - {fileID: 11400000, guid: fff1e789b32d52b4294947acfa1328a7, type: 2}
+  - {fileID: 11400000, guid: 3ccaddd8826b355479101f0525208f8b, type: 2}
+  - {fileID: 11400000, guid: e4cb7f0e65a611249b41b70242b3bf30, type: 2}
+  - {fileID: 11400000, guid: 971753264feacde479c41a1419fc9147, type: 2}
+  - {fileID: 11400000, guid: 3f376339b5ac9624381263b610a94749, type: 2}
+  - {fileID: 11400000, guid: a03290ef454b7b646b7f806eff95435e, type: 2}
+  - {fileID: 11400000, guid: c3e4e905cc1302f49bca95f1d4553630, type: 2}
+  - {fileID: 11400000, guid: 3a84c594c8b487242a095ba9f9c4393f, type: 2}
+  - {fileID: 11400000, guid: e790234fb0e557345b295ac7a2b11b81, type: 2}
   - {fileID: 11400000, guid: f9401bcae74502645a45ef5a2942d81e, type: 2}
+  - {fileID: 11400000, guid: 6d48a209ea005a848b6e06166beb51ae, type: 2}
   m_initialSanity: 0.5
-  m_sanityLossPerDay: 0.2
+  m_sanityLossPerDay: 0.4
   m_sanityFadeCurve:
     serializedVersion: 2
     m_Curve:
@@ -4570,7 +4578,7 @@ GameObject:
   - component: {fileID: 1578768604}
   - component: {fileID: 1578768606}
   - component: {fileID: 1578768605}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4674,7 +4682,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -64}
+  m_AnchoredPosition: {x: 25, y: -25}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1579228659
@@ -4730,7 +4738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.011764706}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.7490196}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -5045,10 +5053,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Shower
@@ -5067,11 +5071,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 0.17
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5116,6 +5120,10 @@ PrefabInstance:
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_sanityGainOnComplete
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
+      propertyPath: <InteractionPointerCount>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: <m_interactionPointerCount>k__BackingField
@@ -5363,10 +5371,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Fish Tank
@@ -5377,7 +5381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.9136809
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.y
@@ -5385,7 +5389,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.5
+      value: 6.6741
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5547,10 +5551,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Cupboard
@@ -5636,10 +5636,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Kitchen
@@ -5650,19 +5646,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1.4126
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.3482
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7
+      value: 7.2937
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4
+      value: 3.8259
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.z
@@ -5707,6 +5703,10 @@ PrefabInstance:
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_sanityGainOnComplete
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
+      propertyPath: <InteractionPointerCount>k__BackingField
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3851937262660315396, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: <m_interactionPointerCount>k__BackingField
@@ -5835,7 +5835,7 @@ GameObject:
   - component: {fileID: 2084185604}
   - component: {fileID: 2084185603}
   - component: {fileID: 2084185608}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5964,7 +5964,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2084185602}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.41, y: 4.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5989,14 +5989,13 @@ MonoBehaviour:
   m_quickTimeUI: {fileID: 363524639}
   m_quickTimeProgressPerInput: 0.3
   m_quickTimeLoss: 1
-  m_sqInteractionRange: 2
   m_interactionPromptGO: {fileID: 830581731}
   m_interactionBarParent: {fileID: 2140910177}
   m_interactionIndicatorRect: {fileID: 1578768604}
   m_interactionPointerParentRect: {fileID: 458044059}
   m_barProgressSpeed: 1
   m_interactionPointerPrefab: {fileID: 4579182799824621638, guid: 21e2019aec249dc43a2a5b18f5dfc315, type: 3}
-  m_interactionPointerOffset: -5
+  m_interactionPointerOffset: -0.1
   m_barStunRecoverySpeed: 1
 --- !u!95 &2084185608
 Animator:
@@ -6244,7 +6243,7 @@ GameObject:
   - component: {fileID: 2140910178}
   - component: {fileID: 2140910180}
   - component: {fileID: 2140910179}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Interaction Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6319,10 +6318,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 544411184364030098, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1696237716277917246, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_Name
       value: Bed
@@ -6333,19 +6328,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 2.2828
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 2.2176
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.1414
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.5
+      value: 4.3912
       objectReference: {fileID: 0}
     - target: {fileID: 2795841236232848760, guid: 5e6de125f44316b46a51d755519b8b09, type: 3}
       propertyPath: m_LocalPosition.z

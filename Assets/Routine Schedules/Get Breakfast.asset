@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 038664ac81e7f184b840f314b92ae4ce, type: 3}
-  m_Name: Sleep
+  m_Name: Get Breakfast
   m_EditorClassIdentifier: 
-  m_where: Bed
-  m_startHour: 12
-  m_endHour: 22
-  m_checklistText: sleep until the next day
-  m_sanityGainOnComplete: 0.05
-  m_skipHoursOnComplete: 12
-  m_triggerThese: []
+  m_where: Cupboard
+  m_startHour: 8
+  m_endHour: 12
+  m_checklistText: get breakfast from the cupboard
+  m_sanityGainOnComplete: 0
+  m_skipHoursOnComplete: 0
+  m_triggerThese:
+  - {fileID: 11400000, guid: d1c4ca75610da8144a7e6bbf5908e221, type: 2}

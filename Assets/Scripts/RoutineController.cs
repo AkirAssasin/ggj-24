@@ -13,7 +13,9 @@ public class RoutineScheduleHandler
     {
         m_schedule = schedule;
         m_checklistItem = checklistItem;
+
         m_checklistItemTextMesh = m_checklistItem.GetComponent<TextMeshProUGUI>();
+        m_checklistItemTextMesh.text = m_schedule.m_checklistText;
     }
 
     public void Complete()
@@ -28,7 +30,10 @@ public class RoutineScheduleHandler
             GameManager.Instance.AddThisRoutineSchedule(addThisSchedule);
         }
 
-        if (m_schedule.m_skipHoursOnComplete > 0) GameManager.Instance.EndDay();
+        if (m_schedule.m_skipHoursOnComplete > 0)
+        {
+            GameManager.Instance.FastForwardTime(m_schedule.m_skipHoursOnComplete);
+        }
     }
 
     public bool TryToExpire(int currentHour)
@@ -73,29 +78,29 @@ public class RoutineController : MonoBehaviour
 
     public void Complete()
     {
-        if (GameManager.Instance.IsEnteringNextDay || m_scheduleHandlers.Count == 0) return;
+        if (GameManager.Instance.IsFastForwarding || m_scheduleHandlers.Count == 0) return;
         m_scheduleHandlers[0].Complete();
         m_scheduleHandlers.RemoveAt(0);
     }
 
-    void Update()
+    public void CheckExpiredSchedules()
     {
-        if (GameManager.Instance.IsEnteringNextDay) return;
-
         //check if expired
         int currentHour = GameManager.Instance.GetCurrentHour();
         for (int X = m_scheduleHandlers.Count - 1; X > -1; --X)
         {
             if (m_scheduleHandlers[X].TryToExpire(currentHour)) m_scheduleHandlers.RemoveAt(X);
         }
+    }
+
+    public bool IsInteractable() => (m_scheduleHandlers.Count > 0);
+
+    void Update()
+    {
+        if (GameManager.Instance.IsFastForwarding) return;
 
         Vector2 position = m_transform.position;
         float sqDistanceToPlayer = (GameManager.Instance.Player.Position - position).sqrMagnitude;
-        if (m_scheduleHandlers.Count > 0)
-        {   
-            //do interaction check
-            GameManager.Instance.Player.CheckNearestRoutine(this, sqDistanceToPlayer);
-        }
 
         float minSq = m_minSpawnDetectionRange * m_minSpawnDetectionRange;
         float maxSq = m_maxSpawnDetectionRange * m_maxSpawnDetectionRange;

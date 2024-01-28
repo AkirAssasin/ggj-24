@@ -33,15 +33,15 @@ public class GameManager : MonoBehaviour
 
     //sanity
     [SerializeField] float m_initialSanity, m_sanityLossPerDay;
-    float m_sanityPrevDay, m_sanity;
+    float m_sanityPrevShown, m_sanity;
 
     [SerializeField] AnimationCurve m_sanityFadeCurve;
     [SerializeField] CanvasGroup m_sanityBlackoutGroup;
     [SerializeField] TextMeshProUGUI m_sanityTextMesh;
     [SerializeField] float m_sanityBlackoutFadeDuration;
     [SerializeField] float m_sanityTextDuration;
-    Akir.Coroutine m_endDayCoroutine;
-    public bool IsEnteringNextDay => m_endDayCoroutine.Running;
+    Akir.Coroutine m_fastForwardCoroutine;
+    public bool IsFastForwarding => m_fastForwardCoroutine.Running;
 
     //time
     [SerializeField] int m_startHour, m_endHour;
@@ -63,10 +63,10 @@ public class GameManager : MonoBehaviour
         Instance = this;
 
         //set up sanity values
-        m_sanityPrevDay = m_sanity = m_initialSanity;
+        m_sanityPrevShown = m_sanity = m_initialSanity;
 
         //set up coroutine runner
-        m_endDayCoroutine = new Akir.Coroutine(this);
+        m_fastForwardCoroutine = new Akir.Coroutine(this);
 
         //calculate end of day minutes
         m_endOfDayMinutes = (m_endHour - m_startHour) * 60;
@@ -85,10 +85,6 @@ public class GameManager : MonoBehaviour
 
     void StartDay()
     {
-        //reset time
-        m_currentMinute = 0;
-        SetTimeBarAndText();
-
         //clear checklist
         foreach (GameObject checklistItem in m_checklistItems) Destroy(checklistItem);
         m_checklistItems.Clear();
@@ -97,11 +93,23 @@ public class GameManager : MonoBehaviour
         m_nextRoutineScheduleIndex = 0;
         foreach (RoutineController routine in m_routines) routine.ResetSchedulesAndSpawns();
 
+        //reset time
+        m_currentMinute = 0;
+        SetTimeBarAndText();
+        UpdateRoutineSchedules();
+
+        //reset enemies
+        ClearAllEnemies();
+    }
+
+    void ClearAllEnemies()
+    {
         //reset enemies
         for (int X = m_enemies.Count - 1; X > -1; --X)
         {
             m_enemies[X].Pool();
         }
+        m_enemies.Clear();
     }
 
     void OnDestroy()
@@ -153,21 +161,42 @@ public class GameManager : MonoBehaviour
         m_highestCue = 0;
     }
 
+    void UpdateRoutineSchedules()
+    {
+        //get current hour
+        int currentHour = GetCurrentHour();
+        while (m_nextRoutineScheduleIndex < m_routineSchedules.Count && m_routineSchedules[m_nextRoutineScheduleIndex].m_startHour <= currentHour)
+        {
+            //schedule new routines
+            AddThisRoutineSchedule(m_routineSchedules[m_nextRoutineScheduleIndex++]);
+        }
+
+        //check expired
+        for (int X = 0; X < m_routines.Count; ++X)
+        {
+            m_routines[X].CheckExpiredSchedules();
+        }
+    }
+
+    void LoseSanity(float hoursPassed)
+    {
+        m_sanity -= m_sanityLossPerDay * hoursPassed / (m_endHour - m_startHour);
+    }
+
     // Update is called once per frame
     void Update()
     {
         //normal day stuff
-        if (!IsEnteringNextDay)
+        if (!IsFastForwarding)
         {
             //advance time
+            int prevHour = GetCurrentHour();
             m_currentMinute += m_minutesPerSecond * Time.deltaTime;
-
-            //get current hour
             int currentHour = GetCurrentHour();
-            while (m_nextRoutineScheduleIndex < m_routineSchedules.Count && m_routineSchedules[m_nextRoutineScheduleIndex].m_startHour <= currentHour)
+            if (prevHour != currentHour)
             {
-                //schedule new routines
-                AddThisRoutineSchedule(m_routineSchedules[m_nextRoutineScheduleIndex++]);
+                LoseSanity(currentHour - prevHour);
+                UpdateRoutineSchedules();
             }
 
             //auto end day
@@ -175,7 +204,7 @@ public class GameManager : MonoBehaviour
             {
                 //you didn't bedge in time
                 m_currentMinute = m_endOfDayMinutes;
-                EndDay();
+                FastForwardTime(1);
             }
             SetTimeBarAndText();
         }
@@ -200,24 +229,29 @@ public class GameManager : MonoBehaviour
     //set sanity text
     void SetSanityText(float t)
     {
-        int currentSanity = (int)(100 * Mathf.Lerp(m_sanityPrevDay, m_sanity, t));
+        int currentSanity = (int)(100 * Mathf.Lerp(m_sanityPrevShown, m_sanity, t));
         m_sanityTextMesh.text = $"{currentSanity:00}%";
     }
 
     //advance to next day
-    public void EndDay()
+    public void FastForwardTime(int hours)
     {
-        //cannot end day while day is ending
-        if (IsEnteringNextDay) return;
+        //cannot end day while fast forwarding
+        if (IsFastForwarding) return;
 
         //set initial sanity text
         SetSanityText(0);
 
-        //lose sanity
-        m_sanity -= m_sanityLossPerDay;
+        //check if day will end
+        int currentHour = GetCurrentHour();
+        bool willEndDay = (currentHour + hours >= m_endHour);
+        if (willEndDay) hours = m_endHour - currentHour;
 
-        //start end
-        IEnumerator EndDayCoroutine()
+        //apply sanity effect
+        LoseSanity(hours);
+        
+        //start fast forwarding
+        IEnumerator FastForwardCoroutine()
         {
             //fade in
             yield return new RunForDuration(m_sanityBlackoutFadeDuration, t =>
@@ -227,10 +261,22 @@ public class GameManager : MonoBehaviour
 
             //sanity display
             yield return new RunForDuration(m_sanityTextDuration, t => SetSanityText(t * t));
-            m_sanityPrevDay = m_sanity;
+            m_sanityPrevShown = m_sanity;
 
             //start day
-            StartDay();
+            if (willEndDay)
+            {
+                //day end, start new one
+                StartDay();
+            }
+            else
+            {
+                //day not ended, just clear enemies
+                m_currentMinute += hours * 60;
+                SetTimeBarAndText();
+                UpdateRoutineSchedules();
+                ClearAllEnemies();
+            }
 
             //fade out
             yield return new RunForDuration(m_sanityBlackoutFadeDuration, t =>
@@ -238,6 +284,6 @@ public class GameManager : MonoBehaviour
                 m_sanityBlackoutGroup.alpha = 1f - m_sanityFadeCurve.Evaluate(t);
             });
         }
-        m_endDayCoroutine.Start(EndDayCoroutine());
+        m_fastForwardCoroutine.Start(FastForwardCoroutine());
     }
 }

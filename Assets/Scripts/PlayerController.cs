@@ -17,12 +17,9 @@ public class PlayerController : MonoBehaviour
     float m_quickTimeProgress;
 
     //interaction
-    [SerializeField] float m_sqInteractionRange;
-
-    float m_nearestInteractableRoutineSqDistance = float.MaxValue;
-    RoutineController m_nearestInteractableRoutine = null;
-
+    readonly List<RoutineController> m_touchingTheseRoutines = new List<RoutineController>();
     RoutineController m_interactingWithThis = null;
+
     [SerializeField] GameObject m_interactionPromptGO;
     [SerializeField] GameObject m_interactionBarParent;
     [SerializeField] RectTransform m_interactionIndicatorRect;
@@ -70,56 +67,22 @@ public class PlayerController : MonoBehaviour
             m_barProgressSpeedMultiplier = Mathf.Min(1f, m_barProgressSpeedMultiplier + Time.deltaTime * m_barStunRecoverySpeed);
         }
 
-        //end day things
-        if (GameManager.Instance.IsEnteringNextDay)
-        {
-            CancelInteraction();
-            m_nearestInteractableRoutine = null;
-        }
-
         //update interaction
         if (m_interactingWithThis != null)
         {
-            m_barValue += Time.deltaTime * m_barProgressSpeedMultiplier;
-            float actualBarValue = Mathf.PingPong(m_barValue, 1f);
-
-            Vector2 pointerAnchor = m_interactionPointerParentRect.anchorMin;
-            pointerAnchor.x = actualBarValue;
-            m_interactionPointerParentRect.anchorMin = pointerAnchor;
-            m_interactionPointerParentRect.anchorMax = pointerAnchor;
-
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                if (m_barRangeMin <= actualBarValue && actualBarValue <= m_barRangeMax)
-                {
-                    --m_interactionPointerCount;
-                    m_interactionPointers[m_interactionPointerCount].SetActive(false);
-                    if (m_interactionPointerCount == 0)
-                    {
-                        m_interactingWithThis.Complete();
-                        CancelInteraction();
-                    }
-                    else SetNewBarRange();
-                }
-                else m_barProgressSpeedMultiplier = 0;
-            }
+            UpdateInteraction();
         }
-        else if (m_nearestInteractableRoutine != null)
+        else if (Input.GetKeyDown(KeyCode.X))
         {
-            //enable prompt
-            m_interactionPromptGO.SetActive(true);
-
-            //check prompt
-            if (m_interactingWithThis == null && Input.GetKeyDown(KeyCode.X))
+            for (int X = 0; X < m_touchingTheseRoutines.Count; ++X)
             {
-                StartInteraction(m_nearestInteractableRoutine);
+                if (m_touchingTheseRoutines[X].IsInteractable())
+                {
+                    StartInteraction(m_touchingTheseRoutines[X]);
+                    break;
+                }
             }
         }
-        else m_interactionPromptGO.SetActive(false);
-
-        //reset detection
-        m_nearestInteractableRoutineSqDistance = m_sqInteractionRange;
-        m_nearestInteractableRoutine = null;
 
         //get input
         Vector2 input = new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
@@ -149,6 +112,39 @@ public class PlayerController : MonoBehaviour
     {
         m_interactingWithThis = null;
         m_interactionBarParent.SetActive(false);
+    }
+
+    void UpdateInteraction()
+    {
+        if (GameManager.Instance.IsFastForwarding || !m_interactingWithThis.IsInteractable())
+        {
+            CancelInteraction();
+            return;
+        }
+
+        m_barValue += Time.deltaTime * m_barProgressSpeedMultiplier;
+        float actualBarValue = Mathf.PingPong(m_barValue, 1f);
+
+        Vector2 pointerAnchor = m_interactionPointerParentRect.anchorMin;
+        pointerAnchor.x = actualBarValue;
+        m_interactionPointerParentRect.anchorMin = pointerAnchor;
+        m_interactionPointerParentRect.anchorMax = pointerAnchor;
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (m_barRangeMin <= actualBarValue && actualBarValue <= m_barRangeMax)
+            {
+                --m_interactionPointerCount;
+                m_interactionPointers[m_interactionPointerCount].SetActive(false);
+                if (m_interactionPointerCount == 0)
+                {
+                    m_interactingWithThis.Complete();
+                    CancelInteraction();
+                }
+                else SetNewBarRange();
+            }
+            else m_barProgressSpeedMultiplier = 0;
+        }
     }
 
     void StartInteraction(RoutineController interactWithThis)
@@ -207,7 +203,7 @@ public class PlayerController : MonoBehaviour
             //also cancel interaction
             CancelInteraction();
         }
-        if (m_quickTimeProgress >= 1f || GameManager.Instance.IsEnteringNextDay)
+        if (m_quickTimeProgress >= 1f || GameManager.Instance.IsFastForwarding)
         {
             //we done
             CancelLatch();
@@ -244,12 +240,23 @@ public class PlayerController : MonoBehaviour
         m_animator.SetBool("IsLatched", true);
     }
 
-    public void CheckNearestRoutine(RoutineController routine, float sqDistance)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (sqDistance < m_sqInteractionRange)
+        RoutineController routine = collision.GetComponent<RoutineController>();
+        if (routine != null)
         {
-            m_nearestInteractableRoutineSqDistance = sqDistance;
-            m_nearestInteractableRoutine = routine;
+            m_touchingTheseRoutines.Add(routine);
+            m_interactionPromptGO.SetActive(true);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        RoutineController routine = collision.GetComponent<RoutineController>();
+        if (routine != null)
+        {
+            m_touchingTheseRoutines.RemoveAll(r => r == routine);
+            m_interactionPromptGO.SetActive(m_touchingTheseRoutines.Count > 0);
         }
     }
 }
